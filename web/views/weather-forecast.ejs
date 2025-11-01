@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>พยากรณ์อากาศ 7 วัน + ชั่วโมง (Open-Meteo)</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f2f6fc;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    }
+
+    select,
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 8px;
+    }
+
+    .week-container {
+      display: flex;
+      margin-top: 15px;
+      background: #eef4ff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .day {
+      flex: 1;
+      /* แบ่งเท่าๆ กัน 7 กล่อง */
+      background: #d0e4ff;
+      border-right: 1px solid #c0d4ff;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      white-space: nowrap;
+      font-size: 0.9em;
+    }
+
+    .day:last-child {
+      border-right: none;
+    }
+
+    .day.selected {
+      background: #a0c8ff;
+      font-weight: bold;
+    }
+
+    .summary {
+      margin-top: 10px;
+      padding: 10px;
+      background: #fff3cd;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 1em;
+    }
+
+    .hourly {
+      display: flex;
+      overflow-x: auto;
+      gap: 5px;
+      padding: 5px 0;
+      margin-top: 10px;
+    }
+
+    .hourly div {
+      flex: 0 0 60px;
+      background: #d0e4ff;
+      padding: 6px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 0.85em;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>🌤 พยากรณ์อากาศล่วงหน้า 7 วัน</h2>
+    <label>เลือกจังหวัด</label>
+    <select id="provinceSelect"></select>
+
+    <button onclick="getWeather()">แสดงพยากรณ์</button>
+
+    <div id="weekContainer" class="week-container"></div>
+    <div id="summaryContainer"></div>
+    <div id="hourlyContainer"></div>
+  </div>
+
+  <script>
+    const provinces = {
+      "กรุงเทพมหานคร": { lat: 13.7563, lon: 100.5018 },
+      "เชียงใหม่": { lat: 18.7883, lon: 98.9853 },
+      "เชียงราย": { lat: 19.9072, lon: 99.8309 },
+      "ภูเก็ต": { lat: 7.8804, lon: 98.3923 },
+      "ขอนแก่น": { lat: 16.4419, lon: 102.8350 },
+      "นครราชสีมา": { lat: 14.9799, lon: 102.0977 },
+      "สงขลา": { lat: 7.1756, lon: 100.6143 },
+      "อุบลราชธานี": { lat: 15.2287, lon: 104.8564 }
+    };
+
+    const thaiMonths = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
+      "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+
+    const select = document.getElementById("provinceSelect");
+    for (let p in provinces) {
+      let opt = document.createElement("option");
+      opt.value = p;
+      opt.innerText = p;
+      select.appendChild(opt);
+    }
+
+    let hourlyData = {};
+    let currentSelectedDay = null;
+
+    function getWeather() {
+      const province = select.value;
+      const { lat, lon } = provinces[province];
+
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&hourly=temperature_2m,relativehumidity_2m&timezone=Asia/Bangkok`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          const dailyDates = data.daily.time;
+          const max = data.daily.temperature_2m_max;
+          const min = data.daily.temperature_2m_min;
+
+          const hourlyTimes = data.hourly.time;
+          const hourlyTemps = data.hourly.temperature_2m;
+          const hourlyHumidity = data.hourly.relativehumidity_2m;
+
+          // เก็บ hourly แยกตามวัน
+          hourlyData = {};
+          hourlyTimes.forEach((t, i) => {
+            const day = t.split('T')[0];
+            if (!hourlyData[day]) hourlyData[day] = [];
+            hourlyData[day].push({
+              time: t,
+              temp: hourlyTemps[i],
+              humidity: hourlyHumidity[i]
+            });
+          });
+
+          // แสดง 7 วัน
+          let weekHtml = '';
+          dailyDates.forEach((date, idx) => {
+            const d = new Date(date);
+            const day = d.getDate();
+            const month = thaiMonths[d.getMonth()];
+            const dateStr = `${day} ${month}`;
+            weekHtml += `<div class="day" id="day-${date}" onclick="showHourly('${date}')">
+                    ${dateStr}<br>${max[idx]}/${min[idx]}°C
+                </div>`;
+          });
+          document.getElementById("weekContainer").innerHTML = weekHtml;
+          document.getElementById("summaryContainer").innerHTML = "";
+          document.getElementById("hourlyContainer").innerHTML = "";
+          currentSelectedDay = null;
+
+          // แสดงผลวันนี้อัตโนมัติ
+          const today = new Date().toISOString().split('T')[0];
+          if (hourlyData[today]) {
+            showHourly(today);
+          }
+        });
+    }
+
+    function showHourly(date) {
+      if (currentSelectedDay) {
+        document.getElementById(`day-${currentSelectedDay}`).classList.remove('selected');
+      }
+      document.getElementById(`day-${date}`).classList.add('selected');
+      currentSelectedDay = date;
+
+      if (!hourlyData[date]) return;
+
+      const now = new Date();
+      const currentHour = now.getHours();
+
+      // filter hourly ให้เฉพาะชั่วโมง >= ปัจจุบัน (ถ้าวันนี้)
+      let filteredHours = hourlyData[date].filter(h => {
+        const hHour = new Date(h.time).getHours();
+        if (date === now.toISOString().split('T')[0]) {
+          return hHour >= currentHour;
+        }
+        return true; // วันอื่นทั้งหมด
+      });
+
+      const temps = filteredHours.map(h => h.temp);
+      const humidities = filteredHours.map(h => h.humidity ?? 0);
+      const avgTemp = Math.round(temps.reduce((a, b) => a + b, 0) / temps.length);
+      const avgHumidity = Math.round(humidities.reduce((a, b) => a + b, 0) / humidities.length);
+
+      // emoji
+      let weatherEmoji = "🌤";
+      if (avgHumidity >= 70) weatherEmoji = "🌧";
+      else if (avgTemp <= 20) weatherEmoji = "❄️";
+      else if (avgTemp <= 25) weatherEmoji = "☁️";
+      else if (avgTemp <= 30) weatherEmoji = "🌤";
+      else weatherEmoji = "☀️";
+
+      document.getElementById("summaryContainer").innerHTML =
+        `<div class="summary">${weatherEmoji} อุณหภูมิเฉลี่ย ${avgTemp}°C | ความชื้น ${avgHumidity}%</div>`;
+
+      // แสดง hourly
+      let html = `<h4>อุณหภูมิรายชั่วโมง (${date})</h4><div class="hourly">`;
+      filteredHours.forEach(h => {
+        const hour = new Date(h.time).getHours();
+        const hourStr = hour.toString().padStart(2, '0') + ":00";
+        const humidityText = h.humidity !== undefined ? ` | ${h.humidity}%` : '';
+        html += `<div>${hourStr}<br>${h.temp}°C${humidityText}</div>`;
+      });
+      html += "</div>";
+      document.getElementById("hourlyContainer").innerHTML = html;
+    }
+
+
+  </script>
+
+</body>
+
+</html>

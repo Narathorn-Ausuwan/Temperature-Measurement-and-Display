@@ -28,6 +28,7 @@ app.post("/login", async (req, res) => {
     const { user, error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
+        return res.redirect("/index")
     }
 })
 
