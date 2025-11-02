@@ -23,10 +23,6 @@
         <canvas id="temperatureChart"></canvas>
     </div>
 
-    <div class="container">
-        <canvas id="humidityChart"></canvas>
-    </div>
-
     <script>
         const influxData = JSON.parse('<%- JSON.stringify(influxData).replace(/</g, "\\u003c") %>');
         console.log(influxData);
@@ -38,7 +34,6 @@
         });
 
         const temperatureValues = influxData.temperature.map(item => item.value);
-        const humidityValues = influxData.humidity.map(item => item.value);
 
         // Temperature chart
         const tempCtx = document.getElementById('temperatureChart').getContext('2d');
@@ -57,27 +52,6 @@
             options: {
                 responsive: true,
                 plugins: { title: { display: true, text: 'Temperature Chart' } },
-                scales: { y: { beginAtZero: true } }
-            }
-        });
-
-        // Humidity chart
-        const humCtx = document.getElementById('humidityChart').getContext('2d');
-        new Chart(humCtx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Humidity (%)',
-                    data: humidityValues,
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    tension: 0.3,
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { title: { display: true, text: 'Humidity Chart' } },
                 scales: { y: { beginAtZero: true } }
             }
         });

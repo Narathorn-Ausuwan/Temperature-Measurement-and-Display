@@ -22,4 +22,15 @@ module.exports = async (req, res) => {
         res.render('weather-forecast');
     }
 
+    else if (req.path === "/log") {
+        try {
+            // ดึงข้อมูลจาก InfluxDB ผ่าน controller
+            const data = await getTemperatureData('sensor_readings', ['temperature', 'humidity'], '-1h');
+            res.render('log', { influxData: data });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Error fetching data');
+        }
+    }
+
 }

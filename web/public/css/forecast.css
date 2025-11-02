@@ -1,0 +1,77 @@
+body {
+    background: #5E8BB3;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+}
+
+select,
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border-radius: 8px;
+}
+
+.week-container {
+    display: flex;
+    margin-top: 15px;
+    background: #eef4ff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.day {
+    flex: 1;
+    /* แบ่งเท่าๆ กัน 7 กล่อง */
+    background: #d0e4ff;
+    border-right: 1px solid #c0d4ff;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 0.9em;
+}
+
+.day:last-child {
+    border-right: none;
+}
+
+.day.selected {
+    background: #a0c8ff;
+    font-weight: bold;
+}
+
+.summary {
+    margin-top: 10px;
+    padding: 10px;
+    background: #fff3cd;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1em;
+}
+
+.hourly {
+    display: flex;
+    overflow-x: auto;
+    gap: 5px;
+    padding: 5px 0;
+    margin-top: 10px;
+}
+
+.hourly div {
+    flex: 0 0 60px;
+    background: #d0e4ff;
+    padding: 6px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 0.85em;
+    white-space: nowrap;
+}

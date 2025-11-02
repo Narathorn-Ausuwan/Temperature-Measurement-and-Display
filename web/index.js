@@ -24,6 +24,8 @@ app.get('/', indexController);
 app.get('/home', indexController);
 app.get('/pet-board', indexController);
 app.get('/weather-forecast', indexController);
+app.get('/log', indexController);
+// app.get('/setting', indexController);
 
 app.listen(4000, () => {
     console.log("App listenning on port 4000");
