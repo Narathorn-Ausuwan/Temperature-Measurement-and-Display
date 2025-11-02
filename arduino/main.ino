@@ -3,19 +3,19 @@
 #include <Arduino_JSON.h>
 
 // ============== USER CONFIGURATION ==============
-char ssid[] = "MatchaDesu";
-char pass[] = "inkumaru";
+char ssid[] = "Narasiri_2-2.4G";
+char pass[] = "Narasiri002";
 
 // <<<<< ใส่ URL ของคุณจาก Render (ไม่ต้องมี "https://")
-const char serverAddress[] = "iot-test-mbxt.onrender.com"; 
+const char serverAddress[] = "temperature-measurement-and-display.onrender.com"; 
 const int serverPort = 443;
 const char apiPath[] = "/api/sensorReading";
 
 // <<<<< ใส่ API KEY เดียวกันกับบน Render
-const char* apiKey = "asksdppflRppslfoes";
+const char* apiKey = "ldfkjgkldgksjadksf_awehadasdbye";
 
-const char* deviceId   = "uno-r4-home-01";
-const char* deviceName = "DHT-Sensor";
+const char* deviceId   = "MCP9700-sensor-home-01";
+const char* deviceName = "MCT-Sensor";
 const char* location   = "Bedroom";
 
 const long sendingInterval = 60000; // 60 วินาที
@@ -35,8 +35,10 @@ void setup() {
 void loop() {
   if (millis() - lastSendTime > sendingInterval) {
     lastSendTime = millis();
-    float temperature = random(2000, 3500) / 100.0;
-    sendDataToServer(temperature, humidity);
+    int value = analogRead(A0);
+    float volt = (value * 5.0) / 1023.0;
+    float temperature = (volt-1) * 100 + 30 ; 
+    sendDataToServer(temperature);
   }
 }
 void connectToWiFi() {
