@@ -3,8 +3,8 @@
 #include <Arduino_JSON.h>
 
 // ============== USER CONFIGURATION ==============
-char ssid[] = "Narasiri_2-2.4G";
-char pass[] = "Narasiri002";
+char ssid[] = "";
+char pass[] = "";
 
 // <<<<< ใส่ URL ของคุณจาก Render (ไม่ต้องมี "https://")
 const char serverAddress[] = "temperature-measurement-and-display.onrender.com"; 
@@ -12,7 +12,7 @@ const int serverPort = 443;
 const char apiPath[] = "/api/sensorReading";
 
 // <<<<< ใส่ API KEY เดียวกันกับบน Render
-const char* apiKey = "ldfkjgkldgksjadksf_awehadasdbye";
+const char* apiKey = "_";
 
 const char* deviceId   = "MCP9700-sensor-home-01";
 const char* deviceName = "MCT-Sensor";
