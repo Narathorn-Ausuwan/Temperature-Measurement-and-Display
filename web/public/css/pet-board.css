@@ -108,3 +108,25 @@ hr {
     background-color: #ccc;
     cursor: not-allowed;
 }
+
+/* ปรับปุ่ม Sort ให้เหมือนปุ่ม Pagination */
+.sort-btn-container {
+    text-align: center;
+    margin-bottom: 10px;
+    background: none;
+}
+
+.sort-btn-container button {
+    background-color: #e7e36d;
+    border: none;
+    padding: 8px 16px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.sort-btn-container button:hover {
+    background-color: #9d9a3f;
+}

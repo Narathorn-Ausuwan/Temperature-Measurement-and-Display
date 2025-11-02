@@ -25,14 +25,15 @@
         const influxData = JSON.parse('<%- JSON.stringify(influxData).replace(/</g, "\\u003c") %>');
 
         // แปลงเวลาให้อ่านง่าย
-        const tableData = influxData.temperature.map(item => {
+        let tableData = influxData.temperature.map(item => {
             const date = new Date(item.time);
             const timeStr = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
             return {
+                timestamp: date.getTime(), // ใช้สำหรับ sort
                 time: timeStr,
                 device: item.deviceName,
                 location: item.location,
-                temperature: item.value.toFixed(2)
+                temperature: item.value
             };
         });
 
@@ -41,23 +42,32 @@
         let currentPage = 1;
         const totalPages = Math.ceil(tableData.length / rowsPerPage);
 
+        // สถานะการเรียง
+        let sortAscending = true; // เริ่มต้นเรียงจากเก่า → ใหม่
+
         function renderTable(page) {
+            // เรียงข้อมูลตามเวลา
+            tableData.sort((a, b) => sortAscending ? a.timestamp - b.timestamp : b.timestamp - a.timestamp);
+
             const start = (page - 1) * rowsPerPage;
             const end = start + rowsPerPage;
             const rows = tableData.slice(start, end);
 
             let tableHTML = `
-    <table>
-        <thead>
-            <tr>
-                <th>Time</th>
-                <th>Device</th>
-                <th>Location</th>
-                <th>Temperature (°C)</th>
-            </tr>
-        </thead>
-        <tbody>
-    `;
+                <div class="sort-btn-container">
+                    <button id="sortBtn">${sortAscending ? 'ASC' : 'DESC'}</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Device</th>
+                            <th>Location</th>
+                            <th>Temperature (°C)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
 
             rows.forEach(row => {
                 tableHTML += `
@@ -65,7 +75,7 @@
                 <td>${row.time}</td>
                 <td>${row.device}</td>
                 <td>${row.location}</td>
-                <td>${row.temperature}</td>
+                <td>${row.temperature.toFixed(2)}</td>
             </tr>
         `;
             });
@@ -84,15 +94,20 @@
             // Event listeners
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
+            const sortBtn = document.getElementById('sortBtn');
 
             if (prevBtn) prevBtn.addEventListener('click', () => { currentPage--; renderTable(currentPage); });
             if (nextBtn) nextBtn.addEventListener('click', () => { currentPage++; renderTable(currentPage); });
+            if (sortBtn) sortBtn.addEventListener('click', () => {
+                sortAscending = !sortAscending;
+                currentPage = 1; // เริ่มจากหน้าแรกหลังสลับ
+                renderTable(currentPage);
+            });
         }
 
         // แสดงหน้าแรก
         renderTable(currentPage);
     </script>
-
 
 </body>
 
