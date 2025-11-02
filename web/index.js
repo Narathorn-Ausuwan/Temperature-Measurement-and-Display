@@ -10,7 +10,6 @@ dotenv.config();
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(express.static('public'));
 app.use(express.json());
 app.set('view engine', 'ejs');
 
@@ -50,15 +49,13 @@ app.post('/api/sensorReading', async (req, res) => {
 
   try {
     writeApi.writePoint(point);
-    await writeApi.flush();
-
+    await writeApi.flush();   // ← ใส่ตรงนี้ หลัง writePoint
     console.log(`[INFO] Write SUCCESS for device: ${deviceId}`);
     res.status(201).json({ message: 'Data logged and flushed.' });
-
-  } catch (error) {
+} catch (error) {
     console.error('Error writing to InfluxDB:', error);
     res.status(500).json({ error: 'Failed to log data to InfluxDB.' });
-  }
+}
 
 });
 
