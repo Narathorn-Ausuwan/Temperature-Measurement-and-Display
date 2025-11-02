@@ -1,0 +1,55 @@
+* {
+    outline: 1px solid red;
+}
+
+html,
+body {
+    background-color: #5E8BB3;
+}
+
+.container {
+    max-width: 80%;
+    margin: auto;
+    background: none;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+}
+
+hr {
+    width: 100%;
+    /* ปรับความยาวตรงนี้ เช่น 50%, 200px, ฯลฯ */
+    border: 0;
+    height: 0.3rem;
+    background: #F8F25D;
+    /* สีเส้น */
+    margin: 1rem auto;
+    /* auto = จัดให้ตรงกลาง */
+    border-radius: 10px;
+}
+
+.container b {
+    font-size: 5rem;
+    color: aliceblue;
+    background: none;
+}
+
+#datetime {
+    font-size: 2rem;
+    color: aliceblue;
+    background: none;
+}
+
+
+@media (max-width: 600px) {
+
+    .container b,
+    #datetime {
+        font-size: 2.5rem;
+        /* ลดครึ่งหนึ่งในมือถือ */
+    }
+
+    #datetime {
+        font-size: 1rem;
+    }
+}

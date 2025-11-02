@@ -5,7 +5,6 @@ const app = express();
 const ejs = require('ejs');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const { InfluxDB, Point } = require('@influxdata/influxdb-client');
 const { createClient } = require('@supabase/supabase-js');
 const webpush = require('web-push');
 

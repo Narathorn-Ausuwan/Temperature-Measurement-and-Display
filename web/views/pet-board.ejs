@@ -5,13 +5,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tempui</title>
-    <link href="/css/temp-board.css" rel="stylesheet">
+    <link href="/css/pet-board.css" rel="stylesheet">
     <link href="/css/default-style.css" rel="stylesheet">
-    <script src="/js/temp-board.js" defer></script>
+    <script src="/js/pet-board.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
+    <div class="container">
+        <b>Petboard</b>
+        <hr>
+        <p id="datetime"></p>
+    </div>
 
+    <div class="container">
+        <canvas id="temperatureChart"></canvas>
+    </div>
+
+    <div class="container">
+        <canvas id="humidityChart"></canvas>
+    </div>
+
+    <script>
+        const influxData = JSON.parse('<%- JSON.stringify(influxData).replace(/</g, "\\u003c") %>');
+        console.log(influxData);
+
+        // แปลงเวลาให้อ่านง่าย (ชั่วโมง:นาที)
+        const labels = influxData.temperature.map(item => {
+            const date = new Date(item.time);
+            return `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+        });
+
+        const temperatureValues = influxData.temperature.map(item => item.value);
+        const humidityValues = influxData.humidity.map(item => item.value);
+
+        // Temperature chart
+        const tempCtx = document.getElementById('temperatureChart').getContext('2d');
+        new Chart(tempCtx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Temperature (°C)',
+                    data: temperatureValues,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    tension: 0.3,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { title: { display: true, text: 'Temperature Chart' } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // Humidity chart
+        const humCtx = document.getElementById('humidityChart').getContext('2d');
+        new Chart(humCtx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Humidity (%)',
+                    data: humidityValues,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    tension: 0.3,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { title: { display: true, text: 'Humidity Chart' } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    </script>
 </body>
 
 </html>
