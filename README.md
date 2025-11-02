@@ -26,11 +26,15 @@ Tempui - Temperature Measurements and Display
 - Input : เซนเซอร์ MCP9700 จะวัดอุณหภูมิในสภาพแวดล้อมใกล้เคียง และส่งข้อมูลที่ได้ไป InfluxDB
 - Output : มีการแสดงผลทางเว็บไซต์ในรูปแบบ Dashboard ที่แสดงข้อมูลอุณหภูมิที่วัดได้ และแสดงผลแบบ Log สำหรับผู้ใช้ที่ต้องการทราบรายละเอียดมากขึ้น โดยดึงข้อมูลมาจาก InfluxDB
 
-# Project Poster
 
 # Project Website
+https://temperature-measurement-and-display.onrender.com/
 
 # Demo Video
+https://www.youtube.com/watch?v=CoOb623U2RM
+
+# Project Poster
+<img width="1587" height="2245" alt="Poster PhysicalCom" src="https://github.com/user-attachments/assets/9308b84b-5b90-4420-84b2-fd1ee6b05450" />
 
 # สมาชิก
 
