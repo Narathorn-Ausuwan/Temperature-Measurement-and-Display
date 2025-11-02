@@ -36,7 +36,6 @@ void loop() {
   if (millis() - lastSendTime > sendingInterval) {
     lastSendTime = millis();
     float temperature = random(2000, 3500) / 100.0;
-    float humidity = random(4000, 7500) / 100.0;
     sendDataToServer(temperature, humidity);
   }
 }
@@ -61,7 +60,7 @@ void connectToWiFi() {
 }
 
 
-void sendDataToServer(float temp, float hum) {
+void sendDataToServer(float temp) {
   Serial.println("[3] Preparing and sending data...");
   
   // สร้าง JSON object
@@ -70,7 +69,6 @@ void sendDataToServer(float temp, float hum) {
   jsonData["deviceName"] = deviceName;
   jsonData["location"] = location;
   jsonData["temperature"] = temp;
-  jsonData["humidity"] = hum;
 
   // แปลง JSON object เป็น String
   String jsonString = JSON.stringify(jsonData);

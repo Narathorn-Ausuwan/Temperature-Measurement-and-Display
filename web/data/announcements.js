@@ -10,9 +10,5 @@ module.exports = [
     {
         img: "/assets/announcements/banner-3.png",
         link: "/weather-forecast"
-    },
-    {
-        img: "/assets/announcements/banner-4.png",
-        link: "/#"
     }
 ];

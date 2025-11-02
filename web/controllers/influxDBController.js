@@ -14,7 +14,7 @@ const queryApi = influxDB.getQueryApi(org);
  * @param {Array<string>} fields - ชื่อ fields
  * @param {string} range - '-1h', '-7d'
  */
-async function getTemperatureData(measurement = 'sensor_readings', fields = ['temperature', 'humidity'], range = '-1h') {
+async function getTemperatureData(measurement = 'sensor_readings', fields = ['temperature'], range = '-1h') {
   const data = {};
 
   for (const field of fields) {
