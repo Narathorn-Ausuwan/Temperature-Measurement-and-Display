@@ -1,19 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tempui</title>
-    <link href="/css/home.css" rel="stylesheet" >
-    <link  href="/css/default-style.css" rel="stylesheet">
-    <script href="/js/home.js"></script>
+    <link href="/css/home.css" rel="stylesheet">
+    <link href="/css/default-style.css" rel="stylesheet">
+    <script src="/js/home.js" defer></script>
 </head>
+
 <body>
-    <div class="container info">
-        <img src="assets/242.png">
+
+    <div class="announcement-slide">
+        <% announcements.forEach(item=> { %>
+            <a class="announcement-item" href="<%= item.link %>">
+                <img src="<%= item.img %>" alt="">
+            </a>
+            <% }) %>
     </div>
-    <div class="container">
+
+    <div class="menu-list">
+
+        <a class="menu-button" href="/pet-board">
+            <img src="/assets/Petboard.png">
+        </a>
+
+        <a class="menu-button" href="/weather-forecast">
+            <img src="/assets/fortune.png">
+        </a>
+
+        <a class="menu-button" href="/log">
+            <img src="/assets/log.png">
+        </a>
+
+        <a class="menu-button" href="/setting">
+            <img src="/assets/setting.png">
+        </a>
 
     </div>
+
 </body>
+
 </html>

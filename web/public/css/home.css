@@ -1,3 +1,55 @@
-.container {
-    outline: 1px solid red;
+.announcement-slide {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory; /* เปิด snap แนวนอน */
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* iOS */
+    width: 100%;
+    gap: 0;
+}
+
+.announcement-slide::-webkit-scrollbar {
+    height: 8px; /* scrollbar แนวนอน */
+}
+
+.announcement-slide::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.announcement-slide::-webkit-scrollbar-thumb {
+    background: #1D3E51;
+    border-radius: 4px;
+}
+
+.announcement-item {
+    flex: 0 0 100%; /* เต็ม width container */
+    scroll-snap-align: start; /* snap ที่จุดเริ่ม item */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.announcement-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.menu-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 2vw;
+}
+
+.menu-button {
+    max-width: 20rem;
+    margin: auto;
+    margin-bottom: 1rem;
+    background: #1D3E51;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+}
+
+.menu-button img {
+    width: 20rem;
 }

@@ -112,7 +112,7 @@
       "อุบลราชธานี": { lat: 15.2287, lon: 104.8564 }
     };
 
-    const thaiMonths = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
+    const months = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
       "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
 
     const select = document.getElementById("provinceSelect");
@@ -160,7 +160,7 @@
           dailyDates.forEach((date, idx) => {
             const d = new Date(date);
             const day = d.getDate();
-            const month = thaiMonths[d.getMonth()];
+            const month = months[d.getMonth()];
             const dateStr = `${day} ${month}`;
             weekHtml += `<div class="day" id="day-${date}" onclick="showHourly('${date}')">
                     ${dateStr}<br>${max[idx]}/${min[idx]}°C

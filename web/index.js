@@ -22,15 +22,9 @@ supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 const indexController = require('./controllers/indexController');
 
 app.get('/', indexController);
-
-app.post("/login", async (req, res) => {
-    const { email, password } = req.body;
-    const { user, error } = await supabase.auth.signInWithPassword({ email, password });
-
-    if (error) {
-        return res.redirect("/index")
-    }
-})
+app.get('/home', indexController);
+app.get('/pet-board', indexController);
+app.get('/weather-forecast', indexController);
 
 app.listen(4000, () => {
     console.log("App listenning on port 4000");

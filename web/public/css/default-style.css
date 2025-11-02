@@ -4,3 +4,11 @@
     font-family: 'Kanit', sans-serif;
     background-color: #f0f0f0;
 }
+
+body {
+    overflow: auto;              /* เปิด scroll แต่ scrollbar จะซ่อน */
+}
+
+body::-webkit-scrollbar {
+    display: none;               /* ซ่อน scrollbar */
+}
