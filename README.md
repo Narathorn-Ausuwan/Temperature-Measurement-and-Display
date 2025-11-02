@@ -16,7 +16,6 @@ Tempui - Temperature Measurements and Display
 - ejs : สร้างหน้า HTML แบบ Dynamic
 - express : สร้าง Web Server และ API
 - nodemon : อำนวยความสะดวกในการพัฒนาเซิฟเวอร์
-- web-push : ส่ง Push Notifications
 
 # ฮาร์ดแวร์
 - Arduino UNO R4 WiFi
@@ -25,7 +24,6 @@ Tempui - Temperature Measurements and Display
 # การทำงาน
 - Input : เซนเซอร์ MCP9700 จะวัดอุณหภูมิในสภาพแวดล้อมใกล้เคียง และส่งข้อมูลที่ได้ไป InfluxDB
 - Output : มีการแสดงผลทางเว็บไซต์ในรูปแบบ Dashboard ที่แสดงข้อมูลอุณหภูมิที่วัดได้ และแสดงผลแบบ Log สำหรับผู้ใช้ที่ต้องการทราบรายละเอียดมากขึ้น โดยดึงข้อมูลมาจาก InfluxDB
-
 
 # Project Website
 https://temperature-measurement-and-display.onrender.com/
