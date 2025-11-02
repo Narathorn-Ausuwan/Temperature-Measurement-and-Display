@@ -7,6 +7,9 @@ const ejs = require('ejs');
 
 dotenv.config();
 
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(express.static('public'));
 app.use(express.json());
 app.set('view engine', 'ejs');
